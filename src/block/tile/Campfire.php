@@ -34,6 +34,7 @@ use pocketmine\inventory\Inventory;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\world\World;
+use pocketmine\network\mcpe\convert\TypeConverter;
 
 class Campfire extends Spawnable implements Container{
 	use ContainerTrait;
@@ -73,7 +74,7 @@ class Campfire extends Spawnable implements Container{
 		$this->cookingTimes = $cookingTimes;
 	}
 
-	public function readSaveData(CompoundTag $nbt) : void{
+	public function readSaveData(CompoundTag $nbt): void{
 		$this->readData($nbt);
 	}
 
@@ -81,10 +82,10 @@ class Campfire extends Spawnable implements Container{
 		$this->writeData($nbt);
 	}
 
-	protected function addAdditionalSpawnData(CompoundTag $nbt) : void{
-		for($slot = 1; $slot <= self::MAX_ITEMS; $slot++){
+	protected function addAdditionalSpawnData(CompoundTag $nbt, TypeConverter $typeConverter) : void {
+		for ($slot = 1; $slot <= self::MAX_ITEMS; $slot++) {
 			$item = $this->inventory->getItem($slot - 1);
-			if(!$item->isNull()){
+			if (!$item->isNull()) {
 				$nbt->setTag(self::ITEM_SLOTS . $slot, $item->nbtSerialize());
 			}
 		}
